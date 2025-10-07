@@ -1,4 +1,122 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Horizon Consultant Malawi</title><link rel="stylesheet" href="style.css"></head><body>
-<header class="site-header"><div class="header-inner"><img src="images/logo.png" class="logo"><div class="brand"><h1>Horizon Group</h1><div class="slogan">Create · Invest · Grow</div></div></div><nav class="main-nav"><a href="index.html">Home</a></nav></header>
-<main style="max-width:900px;margin:24px auto;padding:16px"><div class="card"><h2>Horizon Consultant Malawi</h2><p>This page is coming soon. Placeholder for Horizon Consultant Malawi.</p></div></main>
-<footer>© <span id="year2"></span> Horizon Group</footer><script>document.getElementById('year2').textContent=new Date().getFullYear();</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horizon Consultant</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      text-align: center;
+      padding: 40px 20px;
+      color: #003366;
+    }
+
+    .container {
+      background: #ffffff;
+      border: 2px solid #3399ff;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #0066cc;
+      margin-bottom: 20px;
+    }
+
+    p.welcome {
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .service-btn {
+      display: block;
+      background-color: #3399ff;
+      color: white;
+      border: none;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .service-btn:hover {
+      background-color: #0066cc;
+    }
+
+    .contact-info {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #003366;
+      display: none;
+      text-align: left;
+      background: #e6f0ff;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #3399ff;
+    }
+
+    .contact-info p {
+      margin: 8px 0;
+    }
+
+    .shine {
+      font-weight: bold;
+      background: linear-gradient(90deg, #00f, #fff, #00f);
+      background-size: 200% auto;
+      color: #fff;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: shine 2s linear infinite;
+      text-decoration: none;
+    }
+
+    @keyframes shine {
+      0% { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Welcome to Horizon Consultant</h1>
+    <p class="welcome">
+      We are equipped with professional and well-experienced consultants. We offer the following consultancy services:
+    </p>
+
+    <!-- Service buttons -->
+    <button class="service-btn" onclick="showContact('Law or Legal Support')">1. Law or Legal Support</button>
+    <button class="service-btn" onclick="showContact('Financial Advisory')">2. Financial Advisory</button>
+    <button class="service-btn" onclick="showContact('Malawi Stock Market Consultancy')">3. Malawi Stock Market Consultants</button>
+    <button class="service-btn" onclick="showContact('Innovation and Technology Consultancy')">4. Innovation and Technology Consultants</button>
+
+    <!-- Contact Info -->
+    <div id="contactInfo" class="contact-info">
+      <p><strong>Book your appointment using the following:</strong></p>
+      <p>Call: <a class="shine" href="tel:0991246948">0991246948</a></p>
+      <p>WhatsApp: <a class="shine" href="https://wa.me/0880681107">0880681107</a></p>
+      <p>Email: <a class="shine" href="mailto:archangellepara@gmail.com">archangellepara@gmail.com</a></p>
+    </div>
+  </div>
+
+  <script>
+    function showContact(serviceName) {
+      const contactDiv = document.getElementById('contactInfo');
+      contactDiv.style.display = 'block';
+      contactDiv.scrollIntoView({behavior: "smooth"});
+    }
+  </script>
+
+</body>
+      </html>
