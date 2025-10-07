@@ -1,122 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Horizon Consultant</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon Consultant Malawi</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f8ff;
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background-color: #f5f9ff;
+      color: #333;
+    }
+
+    header {
+      background-color: #0066cc;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header img {
+      height: 50px;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
       text-align: center;
-      padding: 40px 20px;
-      color: #003366;
+      padding: 80px 20px;
+      background: linear-gradient(to right, #0066cc, #3399ff);
+      color: white;
     }
 
-    .container {
-      background: #ffffff;
-      border: 2px solid #3399ff;
-      padding: 30px;
-      border-radius: 12px;
-      max-width: 600px;
-      margin: auto;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    .hero h1 {
+      font-size: 40px;
+      margin-bottom: 10px;
     }
 
-    h1 {
-      color: #0066cc;
-      margin-bottom: 20px;
-    }
-
-    p.welcome {
+    .hero p {
       font-size: 18px;
-      margin-bottom: 25px;
     }
 
-    .service-btn {
-      display: block;
-      background-color: #3399ff;
+    .services {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .services h2 {
+      font-size: 32px;
+      color: #0066cc;
+      margin-bottom: 30px;
+    }
+
+    .service-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    .service {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .service:hover {
+      transform: translateY(-5px);
+    }
+
+    .service h3 {
+      color: #0077cc;
+    }
+
+    .service p {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .service button {
+      background: #0077cc;
       color: white;
       border: none;
-      padding: 12px;
-      margin: 10px 0;
+      padding: 10px 20px;
       border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
-      font-weight: bold;
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
+      transition: 0.3s;
     }
 
-    .service-btn:hover {
-      background-color: #0066cc;
+    .service button:hover {
+      background: #005fa3;
     }
 
-    .contact-info {
-      margin-top: 20px;
-      font-size: 16px;
-      color: #003366;
+    footer {
+      background: #0066cc;
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      margin-top: 50px;
+    }
+
+    footer p {
+      margin: 5px 0;
+    }
+
+    /* Popup Modal */
+    .modal {
       display: none;
-      text-align: left;
-      background: #e6f0ff;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #3399ff;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
     }
 
-    .contact-info p {
-      margin: 8px 0;
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     }
 
-    .shine {
-      font-weight: bold;
-      background: linear-gradient(90deg, #00f, #fff, #00f);
-      background-size: 200% auto;
-      color: #fff;
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      animation: shine 2s linear infinite;
+    .modal-content h3 {
+      color: #0077cc;
+      margin-bottom: 10px;
+    }
+
+    .modal-content a {
+      display: block;
+      margin: 10px 0;
       text-decoration: none;
+      color: #0077cc;
+      font-weight: bold;
     }
 
-    @keyframes shine {
-      0% { background-position: 200% center; }
-      100% { background-position: -200% center; }
+    .close-btn {
+      background: #ff3333;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Welcome to Horizon Consultant</h1>
-    <p class="welcome">
-      We are equipped with professional and well-experienced consultants. We offer the following consultancy services:
-    </p>
+  <header>
+    <img src="logo.png" alt="Horizon Group Logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-    <!-- Service buttons -->
-    <button class="service-btn" onclick="showContact('Law or Legal Support')">1. Law or Legal Support</button>
-    <button class="service-btn" onclick="showContact('Financial Advisory')">2. Financial Advisory</button>
-    <button class="service-btn" onclick="showContact('Malawi Stock Market Consultancy')">3. Malawi Stock Market Consultants</button>
-    <button class="service-btn" onclick="showContact('Innovation and Technology Consultancy')">4. Innovation and Technology Consultants</button>
+  <section class="hero">
+    <h1>Welcome to Horizon Consultants</h1>
+    <p>We help you with your finances, stocks, and law or legal support.</p>
+  </section>
 
-    <!-- Contact Info -->
-    <div id="contactInfo" class="contact-info">
-      <p><strong>Book your appointment using the following:</strong></p>
-      <p>Call: <a class="shine" href="tel:0991246948">0991246948</a></p>
-      <p>WhatsApp: <a class="shine" href="https://wa.me/0880681107">0880681107</a></p>
-      <p>Email: <a class="shine" href="mailto:archangellepara@gmail.com">archangellepara@gmail.com</a></p>
+  <section class="services" id="services">
+    <h2>Our Services</h2>
+    <div class="service-container">
+      <div class="service">
+        <h3>Legal or Law Support & Counseling</h3>
+        <p>Professional guidance and counseling on legal matters and personal rights.</p>
+        <button onclick="openModal()">Get Help</button>
+      </div>
+
+      <div class="service">
+        <h3>Malawi Stock Market Consultation</h3>
+        <p>Learn and grow with expert advice on investing and trading in the Malawi Stock Exchange.</p>
+        <button onclick="openModal()">Get Help</button>
+      </div>
+
+      <div class="service">
+        <h3>Financial & Professional Document Help</h3>
+        <p>We assist you with CV writing, agreements, speeches, and manifestos.</p>
+        <button onclick="openModal()">Get Help</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal" id="contactModal">
+    <div class="modal-content">
+      <h3>Contact Horizon Consultants</h3>
+      <a href="https://wa.me/265880681107" target="_blank">💬 WhatsApp: 0880681107</a>
+      <a href="tel:+265991246948">📞 Call: 0991246948</a>
+      <a href="mailto:archangellepara@gmail.com">📧 Email: archangellepara@gmail.com</a>
+      <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
   </div>
 
+  <footer id="contact">
+    <p>© 2025 Horizon Group | Create. Invest. Grow.</p>
+  </footer>
+
   <script>
-    function showContact(serviceName) {
-      const contactDiv = document.getElementById('contactInfo');
-      contactDiv.style.display = 'block';
-      contactDiv.scrollIntoView({behavior: "smooth"});
+    function openModal() {
+      document.getElementById('contactModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('contactModal').style.display = 'none';
     }
   </script>
 
 </body>
-      </html>
+</html>
