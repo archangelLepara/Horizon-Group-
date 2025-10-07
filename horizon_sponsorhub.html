@@ -20,7 +20,7 @@
       border-radius: 12px;
       display: inline-block;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      max-width: 400px;
+      max-width: 450px;
       width: 100%;
       position: relative;
     }
@@ -35,9 +35,15 @@
       margin-bottom: 25px;
     }
 
+    p.instruction {
+      font-size: 16px;
+      margin-bottom: 25px;
+      color: #003366;
+      font-weight: bold;
+    }
+
     .shine {
       font-weight: bold;
-      color: #0066ff;
       font-size: 20px;
       background: linear-gradient(90deg, #00f, #fff, #00f);
       background-size: 200% auto;
@@ -46,6 +52,7 @@
       -webkit-background-clip: text;
       color: transparent;
       animation: shine 2s linear infinite;
+      text-decoration: none;
     }
 
     @keyframes shine {
@@ -88,12 +95,16 @@
     <p class="message">
       Would you like to help the Horizon Group? You can donate or sponsor to help the developers reach greater heights!
     </p>
-    <p class="shine">0991246948 (Agnes Makala)</p>
+    <p class="instruction">
+      Chonde lembani dzina lanu ndi mulingo wa ndalama kenaka tumizani ku number yomwe ikuwalayi pogwilitsa ntchito My Airtel app kapena *211# zikomo
+    </p>
+    <!-- Clickable Airtel Money number -->
+    <p><a class="shine" href="tel:*185*0991246948#">0991246948 (Agnes Makala)</a></p>
 
     <form id="donationForm">
-      <input type="text" name="name" placeholder="Your Name" required><br>
-      <input type="number" name="amount" placeholder="Amount Donated (MWK)" required><br>
-      <button type="submit">Submit Donation</button>
+      <input type="text" name="name" placeholder="Dzina lanu / Your Name" required><br>
+      <input type="number" name="amount" placeholder="Mulingo wa ndalama / Amount Donated (MWK)" required><br>
+      <button type="submit">Tumizani / Submit Donation</button>
     </form>
 
     <p id="confirmation"></p>
@@ -105,7 +116,7 @@
       e.preventDefault();
       const name = form.name.value;
       const amount = form.amount.value;
-      document.getElementById('confirmation').innerText = `Thank you, ${name}, for donating MWK ${amount}!`;
+      document.getElementById('confirmation').innerText = `Zikomo, ${name}, chifukwa chotumiza MWK ${amount}!`;
       form.reset();
     });
   </script>
