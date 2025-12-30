@@ -3,159 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Horizon Investments</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    header {
-      background: #1e3a8a;
-      color: white;
-      width: 100%;
-      padding: 50px 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 2rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      font-size: 1.2rem;
-    }
-
-    .services {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin: 40px 0;
-      width: 90%;
-      max-width: 600px;
-    }
-
-    .services button {
-      padding: 15px 25px;
-      font-size: 1rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #2563eb;
-      color: white;
-      transition: background 0.3s;
-    }
-
-    .services button:hover {
-      background: #1d4ed8;
-    }
-
-    /* Modal styling */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.6);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 15% auto;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    .modal-content h2 {
-      margin-bottom: 20px;
-      font-size: 1.5rem;
-    }
-
-    .modal-content a {
-      display: block;
-      margin: 10px 0;
-      padding: 12px;
-      background: #2563eb;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-
-    .modal-content a:hover {
-      background: #1d4ed8;
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: black;
-    }
-  </style>
+  <title>Horizon Investment Consultants</title>
+  <link rel="stylesheet" href="style/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-  <header>
-    <h1>Welcome to Horizon Investments</h1>
-    <p>Empowering youth through financial growth, smart investing, and strategic opportunities.</p>
+  <header class="header">
+    <h1>Horizon Investment Consultants</h1>
+    <p>Expert Guidance. Smart Decisions. Sustainable Growth.</p>
   </header>
 
-  <div class="services">
-    <button onclick="openModal()">Request Investment Training</button>
-    <button onclick="openModal()">Request Youth Capital Funding</button>
-    <button onclick="openModal()">Partnership & Share Programs</button>
-  </div>
-
-  <!-- Modal -->
-  <div id="contactModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Contact Us</h2>
-      <a href="https://wa.me/0884537145" target="_blank">WhatsApp</a>
-      <a href="tel:+265884537145">Call</a>
-      <a href="mailto:horizon@investments.com">Email</a>
+  <!-- Services Section -->
+  <section class="section services">
+    <div class="service-card">
+      <h2>Introduction to Stocks</h2>
+      <p>Learn the basics of stock investing. <strong>Page under construction – Available Soon!</strong></p>
     </div>
-  </div>
+    <div class="service-card">
+      <h2>MSE Portfolio Tracker</h2>
+      <p>Manage your stock portfolio with Google login.</p>
+      <button id="loginBtn">Login with Google</button>
+      <button id="logoutBtn" style="display:none;">Logout</button>
+    </div>
+  </section>
 
-  <script>
-    function openModal() {
-      document.getElementById('contactModal').style.display = 'block';
-    }
+  <!-- Portfolio Tracker Section -->
+  <section class="section" id="portfolioSection" style="display:none;">
+    <form id="stockForm">
+      <h2>Add New Stock</h2>
+      <input type="text" id="company" placeholder="Company Name" required>
+      <input type="date" id="dateBought" required>
+      <input type="number" id="quantity" placeholder="Quantity" min="1" required>
+      <input type="number" id="price" placeholder="Price per Share" step="0.01" min="0" required>
+      <button type="submit">Add Stock</button>
+    </form>
 
-    function closeModal() {
-      document.getElementById('contactModal').style.display = 'none';
-    }
+    <h2>Your Portfolio</h2>
+    <table id="portfolioTable">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Date Bought</th>
+          <th>Quantity</th>
+          <th>Price per Share</th>
+          <th>Total Value</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-    window.onclick = function(event) {
-      const modal = document.getElementById('contactModal');
-      if (event.target == modal) {
-        modal.style.display = 'none';
+    <h2>Portfolio Performance</h2>
+    <canvas id="portfolioChart" width="400" height="200"></canvas>
+  </section>
+
+  <!-- Firebase + Portfolio JS -->
+  <script type="module">
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+    
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCZtiRNOjxM875GzxcDB_cUROyVScH_OHA",
+      authDomain: "horizon-investments.firebaseapp.com",
+      projectId: "horizon-investments",
+      storageBucket: "horizon-investments.firebasestorage.app",
+      messagingSenderId: "453178632734",
+      appId: "1:453178632734:web:e4e062c1a7a13829485c0f",
+      measurementId: "G-GQWQ400WBH"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    const db = getFirestore(app);
+
+    // DOM Elements
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const portfolioSection = document.getElementById("portfolioSection");
+    const stockForm = document.getElementById("stockForm");
+    const portfolioTableBody = document.querySelector("#portfolioTable tbody");
+    const portfolioChartCanvas = document.getElementById("portfolioChart").getContext("2d");
+
+    let user = null;
+    let chart = null;
+
+    // Login
+    loginBtn.addEventListener("click", async () => {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        user = result.user;
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+        portfolioSection.style.display = "block";
+        loadPortfolio();
+      } catch (error) {
+        alert("Login failed: " + error.message);
       }
+    });
+
+    // Logout
+    logoutBtn.addEventListener("click", async () => {
+      await signOut(auth);
+      user = null;
+      loginBtn.style.display = "inline-block";
+      logoutBtn.style.display = "none";
+      portfolioSection.style.display = "none";
+    });
+
+    // Auth state change
+    onAuthStateChanged(auth, (u) => {
+      if (u) {
+        user = u;
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+        portfolioSection.style.display = "block";
+        loadPortfolio();
+      } else {
+        user = null;
+        loginBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+        portfolioSection.style.display = "none";
+      }
+    });
+
+    // Add stock
+    stockForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const stock = {
+        company: document.getElementById("company").value,
+        dateBought: document.getElementById("dateBought").value,
+        quantity: parseInt(document.getElementById("quantity").value),
+        price: parseFloat(document.getElementById("price").value),
+        uid: user.uid
+      };
+      await addDoc(collection(db, "portfolios"), stock);
+      stockForm.reset();
+      loadPortfolio();
+    });
+
+    // Load portfolio
+    async function loadPortfolio() {
+      const q = query(collection(db, "portfolios"), where("uid", "==", user.uid));
+      const snapshot = await getDocs(q);
+      const stocks = snapshot.docs.map(doc => doc.data());
+
+      // Populate table
+      portfolioTableBody.innerHTML = "";
+      stocks.forEach(stock => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${stock.company}</td>
+          <td>${stock.dateBought}</td>
+          <td>${stock.quantity}</td>
+          <td>${stock.price.toFixed(2)}</td>
+          <td>${(stock.quantity * stock.price).toFixed(2)}</td>
+        `;
+        portfolioTableBody.appendChild(row);
+      });
+
+      // Draw chart
+      const labels = stocks.map(s => s.company);
+      const data = stocks.map(s => s.quantity * s.price);
+
+      if (chart) chart.destroy();
+      chart = new Chart(portfolioChartCanvas, {
+        type: "bar",
+        data: { labels, datasets: [{ label: "Total Value", data, backgroundColor: "#4caf50" }] },
+        options: { responsive: true, plugins: { legend: { display: false } } }
+      });
     }
   </script>
 
 </body>
-  </html>
+</html>
