@@ -4,8 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Horizon Investment Consultants</title>
-  <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Firebase compat scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    /* BEGIN BASIC CSS */
+    body { font-family: Arial, sans-serif; background: #f0f0f0; margin: 0; }
+    .header { background: #1e2a78; color: #fff; padding: 20px; text-align: center; }
+    .section { padding: 20px; }
+    .service-card { background: #fff; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+    button { background: #1e2a78; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin: 5px 0;}
+    button:hover { background: #3b49c3; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px;}
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center;}
+    input { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+    form { background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+  </style>
 </head>
 <body>
 
@@ -57,13 +75,7 @@
     <canvas id="portfolioChart" width="400" height="200"></canvas>
   </section>
 
-  <!-- Firebase + Portfolio JS -->
-  <script type="module">
-    // Firebase imports
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-    
+  <script>
     // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyCZtiRNOjxM875GzxcDB_cUROyVScH_OHA",
@@ -76,10 +88,9 @@
     };
 
     // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-    const db = getFirestore(app);
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
     // DOM Elements
     const loginBtn = document.getElementById("loginBtn");
@@ -92,42 +103,36 @@
     let user = null;
     let chart = null;
 
-    // Login
-    loginBtn.addEventListener("click", async () => {
-      try {
-        const result = await signInWithPopup(auth, provider);
+    // Google Login
+    loginBtn.addEventListener("click", () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).then(result => {
         user = result.user;
         loginBtn.style.display = "none";
         logoutBtn.style.display = "inline-block";
         portfolioSection.style.display = "block";
         loadPortfolio();
-      } catch (error) {
-        alert("Login failed: " + error.message);
-      }
+      }).catch(err => alert(err.message));
     });
 
     // Logout
-    logoutBtn.addEventListener("click", async () => {
-      await signOut(auth);
-      user = null;
-      loginBtn.style.display = "inline-block";
-      logoutBtn.style.display = "none";
-      portfolioSection.style.display = "none";
+    logoutBtn.addEventListener("click", () => {
+      auth.signOut().then(() => {
+        user = null;
+        loginBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+        portfolioSection.style.display = "none";
+      });
     });
 
     // Auth state change
-    onAuthStateChanged(auth, (u) => {
-      if (u) {
+    auth.onAuthStateChanged(u => {
+      if(u){
         user = u;
         loginBtn.style.display = "none";
         logoutBtn.style.display = "inline-block";
         portfolioSection.style.display = "block";
         loadPortfolio();
-      } else {
-        user = null;
-        loginBtn.style.display = "inline-block";
-        logoutBtn.style.display = "none";
-        portfolioSection.style.display = "none";
       }
     });
 
@@ -141,15 +146,14 @@
         price: parseFloat(document.getElementById("price").value),
         uid: user.uid
       };
-      await addDoc(collection(db, "portfolios"), stock);
+      await db.collection("portfolios").add(stock);
       stockForm.reset();
       loadPortfolio();
     });
 
     // Load portfolio
     async function loadPortfolio() {
-      const q = query(collection(db, "portfolios"), where("uid", "==", user.uid));
-      const snapshot = await getDocs(q);
+      const snapshot = await db.collection("portfolios").where("uid", "==", user.uid).get();
       const stocks = snapshot.docs.map(doc => doc.data());
 
       // Populate table
@@ -178,6 +182,5 @@
       });
     }
   </script>
-
 </body>
 </html>
