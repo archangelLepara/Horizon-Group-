@@ -2,185 +2,198 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Horizon Investment Consultants</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Chart -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Firebase compat scripts -->
-  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
 
   <style>
-    /* BEGIN BASIC CSS */
-    body { font-family: Arial, sans-serif; background: #f0f0f0; margin: 0; }
-    .header { background: #1e2a78; color: #fff; padding: 20px; text-align: center; }
-    .section { padding: 20px; }
-    .service-card { background: #fff; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
-    button { background: #1e2a78; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin: 5px 0;}
-    button:hover { background: #3b49c3; }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px;}
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center;}
-    input { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; }
-    form { background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+    }
+
+    header {
+      background: #1e2a78;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      background: #111;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav button {
+      background: #1e2a78;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    section {
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    button {
+      background: #1e2a78;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    input {
+      padding: 8px;
+      width: 100%;
+      margin: 5px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <h1>Horizon Investment Consultants</h1>
-    <p>Expert Guidance. Smart Decisions. Sustainable Growth.</p>
-  </header>
+<header>
+  <h1>Horizon Investment Consultants</h1>
+  <p>Empowering Youth Through Smart Investing</p>
+</header>
 
-  <!-- Services Section -->
-  <section class="section services">
-    <div class="service-card">
-      <h2>Introduction to Stocks</h2>
-      <p>Learn the basics of stock investing. <strong>Page under construction – Available Soon!</strong></p>
-    </div>
-    <div class="service-card">
-      <h2>MSE Portfolio Tracker</h2>
-      <p>Manage your stock portfolio with Google login.</p>
-      <button id="loginBtn">Login with Google</button>
-      <button id="logoutBtn" style="display:none;">Logout</button>
-    </div>
-  </section>
+<nav>
+  <button onclick="goHome()">Home</button>
+</nav>
 
-  <!-- Portfolio Tracker Section -->
-  <section class="section" id="portfolioSection" style="display:none;">
-    <form id="stockForm">
-      <h2>Add New Stock</h2>
-      <input type="text" id="company" placeholder="Company Name" required>
-      <input type="date" id="dateBought" required>
-      <input type="number" id="quantity" placeholder="Quantity" min="1" required>
-      <input type="number" id="price" placeholder="Price per Share" step="0.01" min="0" required>
-      <button type="submit">Add Stock</button>
-    </form>
+<section id="homeSection">
+  <div class="card">
+    <h2>Introduction to Stocks</h2>
+    <button onclick="showComingSoon()">Start Learning</button>
+    <p id="comingSoon" class="hidden" style="color:red;">🚧 Under construction – Coming soon</p>
+  </div>
 
-    <h2>Your Portfolio</h2>
-    <table id="portfolioTable">
+  <div class="card">
+    <h2>MSE Portfolio Tracker</h2>
+    <button onclick="fakeLogin()">Login with Google (Demo)</button>
+  </div>
+</section>
+
+<section id="portfolioSection" class="hidden">
+  <div class="card">
+    <h2>Portfolio Tracker (Demo)</h2>
+
+    <input id="company" placeholder="Company Name">
+    <input id="quantity" type="number" placeholder="Quantity">
+    <input id="price" type="number" placeholder="Price per Share">
+
+    <button onclick="addStock()">Add Stock</button>
+
+    <table>
       <thead>
         <tr>
           <th>Company</th>
-          <th>Date Bought</th>
           <th>Quantity</th>
-          <th>Price per Share</th>
-          <th>Total Value</th>
+          <th>Price</th>
+          <th>Total</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody id="tableBody"></tbody>
     </table>
 
-    <h2>Portfolio Performance</h2>
-    <canvas id="portfolioChart" width="400" height="200"></canvas>
-  </section>
+    <canvas id="chart" height="150"></canvas>
+  </div>
+</section>
 
-  <script>
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyCZtiRNOjxM875GzxcDB_cUROyVScH_OHA",
-      authDomain: "horizon-investments.firebaseapp.com",
-      projectId: "horizon-investments",
-      storageBucket: "horizon-investments.firebasestorage.app",
-      messagingSenderId: "453178632734",
-      appId: "1:453178632734:web:e4e062c1a7a13829485c0f",
-      measurementId: "G-GQWQ400WBH"
-    };
+<script>
+  const stocks = [];
+  let chart;
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+  function fakeLogin() {
+    alert("Demo Login Successful");
+    document.getElementById("homeSection").classList.add("hidden");
+    document.getElementById("portfolioSection").classList.remove("hidden");
+  }
 
-    // DOM Elements
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const portfolioSection = document.getElementById("portfolioSection");
-    const stockForm = document.getElementById("stockForm");
-    const portfolioTableBody = document.querySelector("#portfolioTable tbody");
-    const portfolioChartCanvas = document.getElementById("portfolioChart").getContext("2d");
+  function goHome() {
+    document.getElementById("portfolioSection").classList.add("hidden");
+    document.getElementById("homeSection").classList.remove("hidden");
+  }
 
-    let user = null;
-    let chart = null;
+  function showComingSoon() {
+    document.getElementById("comingSoon").classList.remove("hidden");
+  }
 
-    // Google Login
-    loginBtn.addEventListener("click", () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).then(result => {
-        user = result.user;
-        loginBtn.style.display = "none";
-        logoutBtn.style.display = "inline-block";
-        portfolioSection.style.display = "block";
-        loadPortfolio();
-      }).catch(err => alert(err.message));
-    });
+  function addStock() {
+    const company = document.getElementById("company").value;
+    const quantity = document.getElementById("quantity").value;
+    const price = document.getElementById("price").value;
 
-    // Logout
-    logoutBtn.addEventListener("click", () => {
-      auth.signOut().then(() => {
-        user = null;
-        loginBtn.style.display = "inline-block";
-        logoutBtn.style.display = "none";
-        portfolioSection.style.display = "none";
-      });
-    });
+    if (!company || !quantity || !price) {
+      alert("Fill all fields");
+      return;
+    }
 
-    // Auth state change
-    auth.onAuthStateChanged(u => {
-      if(u){
-        user = u;
-        loginBtn.style.display = "none";
-        logoutBtn.style.display = "inline-block";
-        portfolioSection.style.display = "block";
-        loadPortfolio();
+    const total = quantity * price;
+    stocks.push({ company, total });
+
+    const row = `<tr>
+      <td>${company}</td>
+      <td>${quantity}</td>
+      <td>${price}</td>
+      <td>${total}</td>
+    </tr>`;
+
+    document.getElementById("tableBody").innerHTML += row;
+
+    drawChart();
+  }
+
+  function drawChart() {
+    const labels = stocks.map(s => s.company);
+    const data = stocks.map(s => s.total);
+
+    if (chart) chart.destroy();
+
+    chart = new Chart(document.getElementById("chart"), {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [{
+          label: "Portfolio Value",
+          data,
+          backgroundColor: "#4caf50"
+        }]
       }
     });
+  }
+</script>
 
-    // Add stock
-    stockForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const stock = {
-        company: document.getElementById("company").value,
-        dateBought: document.getElementById("dateBought").value,
-        quantity: parseInt(document.getElementById("quantity").value),
-        price: parseFloat(document.getElementById("price").value),
-        uid: user.uid
-      };
-      await db.collection("portfolios").add(stock);
-      stockForm.reset();
-      loadPortfolio();
-    });
-
-    // Load portfolio
-    async function loadPortfolio() {
-      const snapshot = await db.collection("portfolios").where("uid", "==", user.uid).get();
-      const stocks = snapshot.docs.map(doc => doc.data());
-
-      // Populate table
-      portfolioTableBody.innerHTML = "";
-      stocks.forEach(stock => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${stock.company}</td>
-          <td>${stock.dateBought}</td>
-          <td>${stock.quantity}</td>
-          <td>${stock.price.toFixed(2)}</td>
-          <td>${(stock.quantity * stock.price).toFixed(2)}</td>
-        `;
-        portfolioTableBody.appendChild(row);
-      });
-
-      // Draw chart
-      const labels = stocks.map(s => s.company);
-      const data = stocks.map(s => s.quantity * s.price);
-
-      if (chart) chart.destroy();
-      chart = new Chart(portfolioChartCanvas, {
-        type: "bar",
-        data: { labels, datasets: [{ label: "Total Value", data, backgroundColor: "#4caf50" }] },
-        options: { responsive: true, plugins: { legend: { display: false } } }
-      });
-    }
-  </script>
 </body>
 </html>
