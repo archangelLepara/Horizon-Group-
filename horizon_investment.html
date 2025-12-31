@@ -1,198 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Horizon Investment Consultants</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Horizon Investment Consultants – Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Chart -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f6f8;
-    }
-
-    header {
-      background: #1e2a78;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    nav {
-      background: #111;
-      padding: 10px;
-      text-align: center;
-    }
-
-    nav button {
-      background: #1e2a78;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    section {
-      padding: 20px;
-    }
-
-    .card {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    button {
-      background: #1e2a78;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    input {
-      padding: 8px;
-      width: 100%;
-      margin: 5px 0;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
+<style>
+body { font-family: Arial, sans-serif; margin:0; background:#f4f6f8; }
+header { background:#1e2a78; color:#fff; padding:20px; text-align:center; }
+nav { background:#111; padding:10px; text-align:center; }
+nav button { background:#1e2a78; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; }
+section { padding:20px; }
+.card { background:#fff; padding:15px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(0,0,0,.1); }
+button { background:#1e2a78; color:#fff; border:none; padding:10px; border-radius:5px; cursor:pointer; margin-top:5px; }
+input { padding:8px; width:100%; margin:5px 0; }
+table { width:100%; border-collapse:collapse; margin-top:10px; }
+th, td { border:1px solid #ccc; padding:8px; text-align:center; }
+.hidden { display:none; }
+.ai-box { background:#eef2ff; padding:15px; border-left:5px solid #1e2a78; }
+</style>
 </head>
+
 <body>
 
 <header>
-  <h1>Horizon Investment Consultants</h1>
-  <p>Empowering Youth Through Smart Investing</p>
+<h1>Horizon Investment Consultants</h1>
+<p>Empowering Youth Through Smart Investing</p>
 </header>
 
 <nav>
-  <button onclick="goHome()">Home</button>
+<button onclick="goHome()">Home</button>
 </nav>
 
-<section id="homeSection">
-  <div class="card">
-    <h2>Introduction to Stocks</h2>
-    <button onclick="showComingSoon()">Start Learning</button>
-    <p id="comingSoon" class="hidden" style="color:red;">🚧 Under construction – Coming soon</p>
-  </div>
+<!-- HOME -->
+<section id="home">
+<div class="card">
+<h2>Introduction to Stocks</h2>
+<button onclick="showComing()">Start Learning</button>
+<p id="coming" class="hidden" style="color:red;">🚧 Under construction – Coming soon</p>
+</div>
 
-  <div class="card">
-    <h2>MSE Portfolio Tracker</h2>
-    <button onclick="fakeLogin()">Login with Google (Demo)</button>
-  </div>
+<div class="card">
+<h2>MSE Portfolio Tracker</h2>
+<button onclick="demoLogin()">Login with Google (Demo)</button>
+</div>
 </section>
 
-<section id="portfolioSection" class="hidden">
-  <div class="card">
-    <h2>Portfolio Tracker (Demo)</h2>
+<!-- DASHBOARD -->
+<section id="dashboard" class="hidden">
 
-    <input id="company" placeholder="Company Name">
-    <input id="quantity" type="number" placeholder="Quantity">
-    <input id="price" type="number" placeholder="Price per Share">
+<div class="card">
+<h2>Add Stock</h2>
+<input id="company" placeholder="Company name">
+<input id="quantity" type="number" placeholder="Quantity">
+<input id="price" type="number" placeholder="Price per share">
+<button onclick="addStock()">Add Stock</button>
+</div>
 
-    <button onclick="addStock()">Add Stock</button>
+<div class="card">
+<h2>Your Portfolio</h2>
+<table>
+<thead>
+<tr><th>Company</th><th>Qty</th><th>Price</th><th>Total</th></tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+</div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Company</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
+<div class="card">
+<h2>Portfolio Graphs</h2>
+<div>
+  <h4>Total Investment per Company</h4>
+  <canvas id="barChart"></canvas>
+</div>
+<div>
+  <h4>Portfolio Distribution (%)</h4>
+  <canvas id="pieChart"></canvas>
+</div>
+<div>
+  <h4>Estimated Portfolio Growth (Demo)</h4>
+  <canvas id="lineChart"></canvas>
+  <small><em>Not financial advice</em></small>
+</div>
+</div>
 
-    <canvas id="chart" height="150"></canvas>
-  </div>
+<div class="card ai-box">
+<h2>AI Financial Advisor (Demo)</h2>
+<p id="aiText">Add stocks to receive AI advice.</p>
+</div>
+
 </section>
 
 <script>
-  const stocks = [];
-  let chart;
+let stocks = [];
+let barChart, pieChart, lineChart;
 
-  function fakeLogin() {
-    alert("Demo Login Successful");
-    document.getElementById("homeSection").classList.add("hidden");
-    document.getElementById("portfolioSection").classList.remove("hidden");
-  }
+function demoLogin(){
+ alert("Demo login successful");
+ document.getElementById("home").classList.add("hidden");
+ document.getElementById("dashboard").classList.remove("hidden");
+}
 
-  function goHome() {
-    document.getElementById("portfolioSection").classList.add("hidden");
-    document.getElementById("homeSection").classList.remove("hidden");
-  }
+function goHome(){
+ document.getElementById("dashboard").classList.add("hidden");
+ document.getElementById("home").classList.remove("hidden");
+}
 
-  function showComingSoon() {
-    document.getElementById("comingSoon").classList.remove("hidden");
-  }
+function showComing(){
+ document.getElementById("coming").classList.remove("hidden");
+}
 
-  function addStock() {
-    const company = document.getElementById("company").value;
-    const quantity = document.getElementById("quantity").value;
-    const price = document.getElementById("price").value;
+function addStock(){
+ const companyInput = document.getElementById("company");
+ const quantity = document.getElementById("quantity").value;
+ const price = document.getElementById("price").value;
+ const table = document.getElementById("table");
 
-    if (!company || !quantity || !price) {
-      alert("Fill all fields");
-      return;
-    }
+ if(!companyInput.value || !quantity || !price){ alert("Fill all fields"); return; }
 
-    const total = quantity * price;
-    stocks.push({ company, total });
+ const total = quantity * price;
+ stocks.push({company: companyInput.value, quantity: Number(quantity), price: Number(price), total});
 
-    const row = `<tr>
-      <td>${company}</td>
-      <td>${quantity}</td>
-      <td>${price}</td>
-      <td>${total}</td>
-    </tr>`;
+ table.innerHTML += `<tr><td>${companyInput.value}</td><td>${quantity}</td><td>${price}</td><td>${total}</td></tr>`;
 
-    document.getElementById("tableBody").innerHTML += row;
+ companyInput.value = '';
+ document.getElementById("quantity").value = '';
+ document.getElementById("price").value = '';
 
-    drawChart();
-  }
+ drawCharts();
+ runAI();
+}
 
-  function drawChart() {
-    const labels = stocks.map(s => s.company);
-    const data = stocks.map(s => s.total);
+function drawCharts(){
+ const labels = stocks.map(s => s.company);
+ const values = stocks.map(s => s.total);
+ const totalSum = values.reduce((a,b)=>a+b,0);
 
-    if (chart) chart.destroy();
+ // BAR CHART (Pseudo-3D)
+ if(barChart) barChart.destroy();
+ barChart = new Chart(document.getElementById("barChart"), {
+   type: "bar",
+   data: { labels, datasets:[{label:"Total Value (MWK)", data:values, backgroundColor:"#4caf50", borderRadius:6}]},
+   options: { animation:{duration:1500}, plugins:{tooltip:{callbacks:{label: ctx=>`MWK ${ctx.raw}`}}} }
+ });
 
-    chart = new Chart(document.getElementById("chart"), {
-      type: "bar",
-      data: {
-        labels,
-        datasets: [{
-          label: "Portfolio Value",
-          data,
-          backgroundColor: "#4caf50"
-        }]
-      }
-    });
-  }
+ // PIE CHART (Depth effect)
+ if(pieChart) pieChart.destroy();
+ pieChart = new Chart(document.getElementById("pieChart"), {
+   type: "pie",
+   data: { labels, datasets:[{data:values, backgroundColor:["#1e88e5","#43a047","#fbc02d","#e53935"]}]},
+   options: { animation:{animateRotate:true,duration:1500}, plugins:{tooltip:{callbacks:{label: ctx=>`${ctx.label}: ${(ctx.raw/totalSum*100).toFixed(1)}%`}}} }
+ });
+
+ // LINE CHART (Growth projection)
+ const projected = values.reduce((a,b)=>a+b,0);
+ const growthData = [projected*0.9, projected, projected*1.15];
+ if(lineChart) lineChart.destroy();
+ lineChart = new Chart(document.getElementById("lineChart"), {
+   type: "line",
+   data: { labels:["Past","Present","Projected"], datasets:[{label:"Portfolio Value (MWK)", data:growthData, fill:true, tension:0.4, backgroundColor:"rgba(76,175,80,0.2)", borderColor:"#4caf50"}]},
+   options:{animation:{duration:2000}}
+ });
+}
+
+function runAI(){
+ const aiText = document.getElementById("aiText");
+ let totalValue = stocks.reduce((sum, s)=>sum+s.total,0);
+ let advice = "";
+
+ if(stocks.length === 1){
+   advice += "⚠️ Portfolio concentrated in one company. Consider diversification.<br>";
+ } else {
+   advice += "✅ Portfolio diversified across multiple companies.<br>";
+ }
+
+ advice += `📊 Total investment value: MWK ${totalValue}.<br>`;
+ let projected = totalValue*1.15;
+ advice += `📈 Potential future value (demo): MWK ${projected.toFixed(0)}.<br>`;
+ advice += "🧠 Always monitor market trends and company performance.";
+
+ aiText.innerHTML = advice;
+}
 </script>
 
 </body>
